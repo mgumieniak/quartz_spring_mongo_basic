@@ -14,6 +14,8 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerKey;
 import org.quartz.impl.JobDetailImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
@@ -31,6 +33,8 @@ import com.quartz.mongo.intro.quartzintro.scheduler.jobs.SampleJob;
 @Configuration
 public class JobConfiguration {
 
+	private static Logger log = LoggerFactory.getLogger(JobConfiguration.class);
+
 	@Autowired
 	private SchedulerFactoryBean schedulerFactoryBean;
 
@@ -40,6 +44,7 @@ public class JobConfiguration {
 		if (!schedulerFactoryBean.getScheduler().checkExists(new TriggerKey(
 				SchedulerConstants.SAMPLE_JOB_POLLING_TRIGGER_KEY, SchedulerConstants.SAMPLE_JOB_POLLING_GROUP))) {
 			schedulerFactoryBean.getScheduler().scheduleJob(sampleJobTrigger());
+			log.info("scheduleJob !!!!!!!!!!!!!");
 		}
 
 	}
@@ -75,8 +80,8 @@ public class JobConfiguration {
 		return newTrigger().forJob(sampleJobDetail())
 				.withIdentity(SchedulerConstants.SAMPLE_JOB_POLLING_TRIGGER_KEY,
 						SchedulerConstants.SAMPLE_JOB_POLLING_GROUP)
-				.withPriority(50).withSchedule(SimpleScheduleBuilder.repeatMinutelyForever())
-				.startAt(Date.from(LocalDateTime.now().plusSeconds(3).atZone(ZoneId.systemDefault()).toInstant()))
+				.withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(2))
+				.startNow()
 				.build();
 	}
 

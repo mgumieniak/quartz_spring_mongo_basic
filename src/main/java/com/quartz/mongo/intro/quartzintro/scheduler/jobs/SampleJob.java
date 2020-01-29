@@ -46,7 +46,7 @@ public class SampleJob extends QuartzJobBean {
 	 */
 	@Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-		log.info("This is the sample job, executed by {}", applicationContext.getBean(Environment.class));
+		log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 	}
 }
